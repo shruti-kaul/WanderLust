@@ -15,6 +15,24 @@ body {
 .navbar {
     height: 5rem;
     background-color: white;
+    z-index: 1050 !important;   /* Above cards, images, and overlays */
+    position: sticky !important;
+}
+
+/* Mobile nav collapse — solid white bg so it doesn't bleed over images */
+.navbar-collapse {
+    background-color: white;
+    z-index: 1050 !important;
+}
+
+@media (max-width: 767.98px) {
+    .navbar-collapse.collapse.show,
+    .navbar-collapse.collapsing {
+        background-color: white !important;
+        padding: 0.75rem 1rem 1rem;
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Subtle shadow to separate from content */
+    }
 }
 
 .fa-compass {
@@ -109,11 +127,25 @@ body {
 
 /* Show Image */
 .show-img {
-    height: 30vh;
+    height: 40vh;
+    object-fit: cover;
 }
 
+/* Edit + Delete buttons row (desktop) */
 .btns {
     display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Show page: align buttons under the card (desktop) */
+.show-btns {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: calc((100% - (50% + 0px)) / 2);  /* roughly aligns with col-6 offset-3 */
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .show-card {
@@ -135,6 +167,72 @@ body {
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
     outline: 1px solid transparent;
 }
+/* ===== Airbnb-style Review Cards ===== */
+
+/* Review row wrapper */
+.row .card.col-5 {
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07) !important;
+    padding: 0 !important;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.row .card.col-5:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13) !important;
+    transform: translateY(-2px);
+}
+
+/* Username — bold, dark */
+.row .card.col-5 .card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.2rem;
+}
+
+/* Scale down the star rating widget to ~70% */
+.row .card.col-5 .starability-result {
+    transform: scale(0.7);
+    transform-origin: left center;
+    margin-bottom: -0.4rem;  /* compensate for extra space after scale */
+}
+
+/* Comment text */
+.row .card.col-5 .card-text:last-of-type {
+    font-size: 0.85rem;
+    color: #444;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+}
+
+/* Delete button — subtle outline style */
+.row .card.col-5 form {
+    padding: 0 1rem 0.75rem 1rem;
+    margin: 0 !important;
+}
+
+.row .card.col-5 form .btn {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 0.4rem;
+    border-color: #ccc !important;
+    color: #555 !important;
+    background: transparent !important;
+}
+
+.row .card.col-5 form .btn:hover {
+    background: #fee2e2 !important;
+    border-color: #fe424d !important;
+    color: #fe424d !important;
+}
+
+/* Card body inner padding */
+.row .card.col-5 .card-body {
+    padding: 1rem 1rem 0.25rem 1rem !important;
+}
+
 
 #filters {
     display: flex;
@@ -198,4 +296,91 @@ body {
     border-radius: 25px !important;
     padding: 0.5rem 3rem 0.5rem 3rem;
     font-size: 0.8rem;
+}
+
+/* ===== Mobile: Horizontal Scrollable Filters (Airbnb Style) ===== */
+@media (max-width: 767.98px) {
+
+    /* Make the filters container a horizontal scroll strip */
+    #filters {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;       /* Prevent wrapping onto multiple lines */
+        overflow-x: auto !important;        /* Enable horizontal scroll */
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;  /* Smooth momentum scrolling on iOS */
+        scroll-behavior: smooth;
+        gap: 0;
+        padding-bottom: 0.5rem;
+        align-items: center !important;
+        /* Hide scrollbar — keeps it clean like Airbnb */
+        scrollbar-width: none !important;   /* Firefox */
+        -ms-overflow-style: none !important; /* IE / Edge */
+    }
+
+    /* Hide scrollbar for Chrome / Safari / Opera */
+    #filters::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* Each filter link must not shrink — keeps icon+label intact */
+    #filters .filter-link {
+        flex: 0 0 auto !important;  /* Don't shrink, don't grow */
+    }
+
+    /* Adjust per-filter spacing for compact mobile look */
+    .filter {
+        margin-right: 1.25rem !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Push tax-toggle to always stay at the end without shrinking */
+    .tax-toggle {
+        flex: 0 0 auto !important;
+        margin-left: 1rem !important;
+        white-space: nowrap;
+    }
+}
+
+/* ===== Mobile: Show / Detail Page Fixes ===== */
+@media (max-width: 767.98px) {
+
+    /* Listing image: taller + full width on mobile */
+    .show-img {
+        height: 50vw !important;   /* proportional to screen width */
+        min-height: 220px;
+        border-radius: 0.75rem !important;
+    }
+
+    /* Edit + Delete button row: left-aligned, full width, proper gap */
+    .show-btns {
+        padding-left: 0 !important;       /* Remove desktop offset padding */
+        margin-left: 0 !important;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .show-btns .btn,
+    .show-btns form .btn {
+        min-width: 80px;
+        flex: 0 0 auto;
+    }
+
+    /* Map: full width on mobile */
+    #map {
+        width: 100% !important;
+        height: 280px !important;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Review cards: full width on mobile */
+    .col-12.col-sm-6.col-md-5 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Comments textarea: full width on mobile */
+    #comment {
+        width: 100% !important;
+    }
 }
